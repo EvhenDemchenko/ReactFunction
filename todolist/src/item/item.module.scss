@@ -1,0 +1,38 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 1px 1px 5px gray;
+
+  .label{
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .input{
+      border-bottom: 1px solid tomato;
+      font-weight: bold;
+
+    }
+  }
+  .buttonContainer{
+    display: flex;
+    gap: 20px;
+    button {
+      background-color: transparent;
+      border: 1px solid lightgrey;
+      padding: 5px 2px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      &:hover{
+        background-color: lightgrey;
+      }
+      &:active{
+        color: white;
+      }
+    }
+  }
+}
