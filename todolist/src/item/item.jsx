@@ -1,32 +1,59 @@
-import React, {useState} from 'react';
+import React from 'react';
 import module from './item.module.scss';
+import '../style.css'
+import {Form, Field} from 'react-final-form'
+import Input from '../form/input'
 
 const Item = ({item, deleteFn, doneFn, editFn}) => {
-
     const DeleteCurrentItem = () => {
         deleteFn(item.id);
     }
     const DoneItem = () => {
         doneFn(item.id);
     }
-    const EditCurrentItem = () => {
-        editFn(item.id, value);
+    const EditCurrentItem = (value) => {
+        editFn(item.id, value.task);
     }
-    const GetValue = (event) => {
-        setValue(event.target.value);
+
+    const validation = (values) => {
+        const errors = {};
+        if (values.task === undefined || values.task.length <= 5) {
+            errors.task = 'min length 5';
+        }
+        return errors;
     }
-    const [value, setValue] = useState(item.value);
 
     return (
         <div className={module.item}>
-            <label className={module.label}>
-                <input onClick={DoneItem} defaultChecked={item.done} type="checkbox"/>
-                {item.edit
-                    ? <input value={value} className={module.input} onChange={GetValue} type="text"/>
-                    : <b>{value}</b>}
-            </label>
+            <Form
+                onSubmit={EditCurrentItem}
+                validate={validation}
+                initialValues={{
+                    task: item.value,
+                    done: item.done
+                }}
+                render={(props) => {
+                    return (
+                        <form className={module.label} onSubmit={props.handleSubmit}>
+                            <label className={module.innerLabel}>
+                                <Field name="checkbox"
+                                       label='checkbox'
+                                       component="input"
+                                       type='checkbox'
+                                       onClick={DoneItem}
+                                       checked={props.initialValues.done}
+                                />
+                                {item.edit
+                                    ? <Field className={module.input} name="task" label='task' component={Input}/>
+                                    : <b>{props.initialValues.task}</b>
+                                }
+                            </label>
+                            <button> edit</button>
+                        </form>
+                    )
+                }}
+            />
             <div className={module.buttonContainer}>
-                <button onClick={EditCurrentItem}> edit</button>
                 <button onClick={DeleteCurrentItem}> delete</button>
             </div>
         </div>

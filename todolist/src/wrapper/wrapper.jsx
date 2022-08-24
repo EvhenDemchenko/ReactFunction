@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import Items from '../items/items'
-import Form from '../form/form'
+import Forma from '../form/form'
 import axios from "axios";
 import module from './wrapper.module.scss';
 
@@ -52,19 +52,19 @@ function Wrapper() {
         axios.get('https://62f600ee612c13062b4441c2.mockapi.io/todo/todos')
             .then(res => {
                 setStore(res.data)
-            })
+            });
     }, []);
 
     return (
-        <div className={module.wrapper}>
-            <Form createItem={CreateItem}/>
-            <Items
-                doneFn={DoneItem}
-                deleteFn={DeleteItem}
-                store={store}
-                editF={EditItem}
-            />
-        </div>
+            <div className={module.wrapper}>
+                <Forma createItem={CreateItem}/>
+                <Items
+                    doneFn={DoneItem}
+                    deleteFn={DeleteItem}
+                    store={store}
+                    editF={EditItem}
+                />
+            </div>
     );
 }
 
