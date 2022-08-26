@@ -8,7 +8,7 @@ function Wrapper() {
     const [store, setStore] = useState([]);
 
     const CreateItem = async (value, id, done = false, edit = false) => {
-        setStore([...store, {value, id, done, edit}])
+        setStore(prevState => [...prevState, {value, id, done, edit}] )
         await axios.post('https://62f600ee612c13062b4441c2.mockapi.io/todo/todos', {value, id, done, edit})
         await axios.get('https://62f600ee612c13062b4441c2.mockapi.io/todo/todos')
             .then(res => {

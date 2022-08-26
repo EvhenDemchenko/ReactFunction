@@ -2,6 +2,7 @@ import {useContext} from "react";
 import Item from "../item/item";
 import module from './items.module.scss';
 import {ErrorContext} from "../context/context";
+import {v4} from 'uuid';
 
 const Items = ({store, deleteFn, doneFn, editF }) => {
     const {hasError, setError} = useContext(ErrorContext)
@@ -17,7 +18,7 @@ const Items = ({store, deleteFn, doneFn, editF }) => {
                     doneFn={doneFn}
                     deleteFn={deleteFn}
                     item={item}
-                    key={item.id}
+                    key={v4()}
                     editFn={editF}
                 />)}
             </div>
