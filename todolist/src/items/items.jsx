@@ -5,7 +5,7 @@ import {ErrorContext} from "../context/context";
 import {v4} from 'uuid';
 
 const Items = ({store, deleteFn, doneFn, editF }) => {
-    const {hasError, setError} = useContext(ErrorContext)
+    const {setError} = useContext(ErrorContext)
 
     const getError = () => {
         setError(true)

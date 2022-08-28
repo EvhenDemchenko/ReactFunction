@@ -1,40 +1,43 @@
-import React, {useState, memo} from 'react';
+import React from 'react';
 import module from './form.module.scss'
 import {Form, Field} from 'react-final-form'
 import Input from './input'
 import arrayMutators from 'final-form-arrays'
 import {FieldArray} from 'react-final-form-arrays'
-import {v4} from 'uuid';
-const values = ['' , '']
+import {v4} from "uuid";
+
+import {useContext} from "react";
+import {ValContext} from '../context/context';
+
 const Forma = ({createItem}) => {
-    const PreventAction = (event) => {
-        const {items} = event;
-        items.forEach( (item) => {
-              createItem(item)
+    const {initialValues} = useContext(ValContext)
+
+    const submitForm = (values, form) => {
+        const {items} = values
+        items.forEach((item) => {
+            createItem(item, v4())
+        })
+        Object.keys(values).forEach(key => {
+            console.log(key)
+            form.change(key, new Array(items.length).fill(''));
+            form.resetFieldState(key);
         })
     }
-    const validation = (values) => {
-        const errors = {};
-        const {items} = values;
-        items.forEach(item => {
-            if (item === undefined || item.length < 5) {
-                errors.todoTask = 'min length 5';
-            }
-        })
-        return errors;
-    }
-    console.log('component')
+
+    const validation = (values) => values === undefined || (values.length < 5 && values !== "") || values === "" ? 'Required' : undefined;
+
     return (
         <Form
-            onSubmit={PreventAction}
-            validate={validation}
+            onSubmit={submitForm}
             mutators={{...arrayMutators}}
-            initialValues={{items:values }}
+            initialValues={{items: initialValues}}
             render={(props) => {
-                console.log('rendered')
+                const {handleSubmit, form} = props
                 return (
                     <form
-                        onSubmit={props.handleSubmit}
+                        onSubmit={(values) => {
+                            handleSubmit(values, form)
+                        }}
                         className={module.fromWrapper}>
                         <FieldArray name={'items'}>
                             {({fields}) => (
@@ -42,28 +45,25 @@ const Forma = ({createItem}) => {
                                     {fields.map((name, index) => (
                                         <div key={index}
                                              className={module.str}>
-                                            <Field name={name} component={Input}/>
+                                            <Field name={name} validate={validation} component={Input}/>
+                                            {fields.length > 1 &&
+                                                <button onClick={() => {
+                                                    fields.remove(index)
+                                                }}> delete</button>}
                                         </div>
                                     ))}
-                                    <button className={module.btn} onClick={()=>{fields.push('')}}>add field</button>
+                                    <button type="button" className={module.btn} onClick={() => {
+                                        fields.push(undefined);
+                                    }}>add field
+                                    </button>
                                 </div>
                             )}
                         </FieldArray>
-                        <button type={'submit'}> submit</button>
+                        <button type="submit"> submit</button>
                     </form>)
             }}
         />)
-};
-export default memo(Forma)
+}
 
-// <FieldArray name={"api"}>
-//     {({fields}) => (
-//         <div>
-//             {fields.map((name, index) => (
-//                 <div key={index}>
-//                     <Field name={name} component={Input}/>
-//                 </div>))}
-//             <button onClick={() => {fields.push(newTodoItem)}}> Add new field</button>
-//         </div>)}
-// </FieldArray>
-// export default Forma;
+
+export default Forma

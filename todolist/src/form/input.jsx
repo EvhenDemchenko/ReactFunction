@@ -5,7 +5,7 @@ const Input = (props) => {
     return (
         <>
             <input onChange={input.onChange} value={input.value} {...rest} type="text"/>
-            {input.value.length <= 5 && input.value.length >= 1 ? <span> невалидное поле  </span> : ''}
+            {meta.error && meta.touched && <span> невалидное поле  </span>}
         </>
     );
 };
