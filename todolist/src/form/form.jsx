@@ -12,7 +12,7 @@ import {ValContext} from '../context/context';
 const Forma = ({createItem}) => {
     const {initialValues} = useContext(ValContext)
 
-    const submitForm = (values, form) => {
+    const onSubmitForm = (values, form) => {
         const {items} = values
         items.forEach((item) => {
             createItem(item, v4())
@@ -28,7 +28,7 @@ const Forma = ({createItem}) => {
 
     return (
         <Form
-            onSubmit={submitForm}
+            onSubmit={onSubmitForm}
             mutators={{...arrayMutators}}
             initialValues={{items: initialValues}}
             render={(props) => {
