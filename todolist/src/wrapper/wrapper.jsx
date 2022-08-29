@@ -9,7 +9,7 @@ const KEY = 'todos';
 function Wrapper() {
     const [store, setStore] = useState([]);
 
-    const CreateItem = (value, id, done = false, edit = false) => {
+    const CreateItem = async (value, id, done = false, edit = false) => {
         setStore(prevState => {
             localforage.setItem(KEY, [...prevState, {value, id, done, edit}]);
             return [...prevState, {value, id, done, edit}]
